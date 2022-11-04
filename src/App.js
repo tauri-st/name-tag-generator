@@ -4,7 +4,7 @@ import UserInput from "./UserInput.js";
 
 class App extends Component {
   state = {
-    names: ["Erin", "Ann", "Nichole", "Sharon", "Maryn"],
+    names: [],
   };
 
   addName = (name) => {
@@ -18,6 +18,20 @@ class App extends Component {
     const newNames = this.state.names.filter(filterCallback);
     this.setState({ names: newNames });
   };
+
+  componentDidMount() {
+    // saved name string exists in local storage
+    const savedNameString = localStorage.getItem("savedNames");
+    if (savedNameString) {
+      const savedNames = JSON.parse(savedNameString);
+      this.setState({ names: savedNames });
+    }
+  }
+
+  componentDidUpdate() {
+    const savedNameString = JSON.stringify(this.state.names);
+    localStorage.setItem("savedNames", savedNameString);
+  }
 
   render() {
     return (
